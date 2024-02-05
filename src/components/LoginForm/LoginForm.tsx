@@ -15,6 +15,7 @@ const LoginForm = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: {errors, isSubmitting, isSubmitSuccessful}
     } = useForm<RegistrationFormInputs>();
     const [agreement, setAgreement] = useState(false);
@@ -23,13 +24,16 @@ const LoginForm = () => {
         console.log(errors)
     }, [errors]);
     const onSubmit = async (data: RegistrationFormInputs) => {
-        await fetch('http://localhost:9000/api/users', {
+        const response =  await fetch('http://localhost:9000/api/users', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
+        if (response.status === 201) {
+            reset();
+        }
     }
 
     return (
